@@ -10,6 +10,7 @@ public class CardDeck {
     private List<Card> cards;
 
     private static final String[] PATTERNS = {"SPADE", "HEART", "DIAMOND", "CLUB"};
+
     private static final int CARD_COUNT = 13;
 
     // 전체 카드 생성 (52개)
@@ -26,29 +27,13 @@ public class CardDeck {
         for(String pattern : PATTERNS) {
 
             for(int i = 1; i <= CARD_COUNT; i++) {
-                String denomination = this.numberToDenomination(i);
-                Card card = new Card(pattern, denomination);
 
+                Card card = new Card(pattern, i);
                 cards.add(card);
             }
         }
 
         return cards;
-    }
-
-    public String numberToDenomination(int i) {
-
-        if(i == 1) {
-            return "A";
-        } else if(i == 11) {
-            return "J";
-        } else if(i == 12) {
-            return "Q";
-        } else if (i == 13) {
-            return "K";
-        } else {
-            return String.valueOf(i);
-        }
     }
 
     public Card draw() {
