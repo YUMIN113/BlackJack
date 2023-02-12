@@ -28,7 +28,7 @@ public class Dealer {
         return getPointSum() <= CAN_RECEIVE_POINT;
     }
 
-    private int getPointSum() {
+    public int getPointSum() {
 
         int sum = 0;
 

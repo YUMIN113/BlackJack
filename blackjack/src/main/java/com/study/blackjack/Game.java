@@ -53,7 +53,7 @@ public class Game {
                               Gamer gamer,
                               Dealer dealer) throws IOException {
 
-        String gamerInput, dealerInput;
+        String gamerInput;
         boolean isGamerTurn = false,
                 isDealerTurn = false;
 
@@ -68,16 +68,25 @@ public class Game {
                 gamer.receiveCard(selectedCardForGamer);
             }
 
-            System.out.println("Dealer 님, 카드를 뽑겠습니까? 종료를 원하시면 0을 입력하세요.");
-            dealerInput = br.readLine();
+            if(dealer.getPointSum() >= 17) {
 
-            if (dealerInput.equals("0")) {
-                isDealerTurn = true;
-            } else {
-                Card selectedCardForDealer = cardDeck.draw();
-                dealer.receiveCard(selectedCardForDealer);
+                if(isDealerTurn == true) {
+                    System.out.println("Dealer 님, 이미 한 장의 카드를 받으셨습니다. 더이상 카드를 받을 수 없습니다.");
+                } else {
+
+                    isDealerTurn = true;
+                    System.out.println("Dealer 님, 카드의 총 합이 17 이상입니다. 더이상 카드를 받을 수 없습니다.");
+                }
             }
+                if(isDealerTurn == false) {
+                    System.out.println("Dealer 님, 한 장의 카드를 더 받으실 수 있습니다.");
 
+                    Card selectedCardForDealer = cardDeck.draw();
+                    dealer.receiveCard(selectedCardForDealer);
+                    isDealerTurn = true;
+
+                }
+                
             if(isGamerTurn && isDealerTurn) {
                 break;
             }
