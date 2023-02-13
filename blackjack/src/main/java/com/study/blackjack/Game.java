@@ -2,101 +2,96 @@ package com.study.blackjack;
 
 import com.study.blackjack.domain.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 // 게임에 필요한 클래스들의 인스턴스 생성
 public class Game {
 
     private static final int INIT_RECEIVE_CARD_COUNT = 2;
 
-    private static final int CAN_RECEIVE_POINT = 16;
+    private static final int STOP_RECEIVE_CARD = 0;
 
-    public void play() throws IOException {
+    public void play() {
 
         System.out.println("========== BlackJack ==========");
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        Scanner sc = new Scanner(System.in);
 
-        Dealer dealer = new Dealer();
-        Gamer gamer = new Gamer();
         Rule rule = new Rule();
+        List<Player> players = Arrays.asList(new Gamer("사용자1"), new Dealer());
         CardDeck cardDeck = new CardDeck();
 
-        initPhase(cardDeck, gamer, dealer);
-        playingPhase(br, cardDeck, gamer, dealer);
+        initPhase(cardDeck, players);
+        playingPhase(sc, cardDeck, players);
 
     }
 
-    private void initPhase(CardDeck cardDeck,
-                           Gamer gamer,
-                           Dealer dealer) {
+    private List<Player> initPhase(CardDeck cardDeck,
+                           List<Player> players) {
 
         System.out.println("처음 2장의 카드를 각자 뽑겠습니다.");
 
         for(int i = 0; i < INIT_RECEIVE_CARD_COUNT; i++) {
 
-            Card selectedCardForGamer = cardDeck.draw();
-            gamer.receiveCard(selectedCardForGamer);
-
-            System.out.println("여기까지 gamer 카드 입니다.");
-
-            Card selectedCardForDealer = cardDeck.draw();
-            dealer.receiveCard(selectedCardForDealer);
-
-            System.out.println("여기까지 dealer 카드 입니다.");
+            for(Player player : players) {
+                Card card = cardDeck.draw();
+                player.receiveCard(card);
+            }
         }
-
+        return players;
     }
 
-    private void playingPhase(BufferedReader br,
+    private List<Player> playingPhase(Scanner sc,
                               CardDeck cardDeck,
-                              Gamer gamer,
-                              Dealer dealer) throws IOException {
+                              List<Player> players) {
 
-        String gamerInput;
-        boolean isGamerTurn = false,
-                isDealerTurn = false;
+        List<Player> cardReceivePlayers;
 
-        while (true) {
+        while(true) {
 
-            // Gamer 카드 뽑기
-            System.out.println("Gamer 님, 카드를 뽑겠습니까? 종료를 원하시면 0을 입력하세요.");
-            gamerInput = br.readLine();
+            cardReceivePlayers = receiveCardAllPlayers(sc, cardDeck, players);
 
-            if (gamerInput.equals("0")) {
-                isGamerTurn = true;
-            } else {
-                Card selectedCardForGamer = cardDeck.draw();
-                gamer.receiveCard(selectedCardForGamer);
-            }
-
-
-            // Dealer 카드 뽑기
-            if(dealer.getPointSum() <= CAN_RECEIVE_POINT) {
-                if(isDealerTurn == false) {
-                    System.out.println("Dealer 님, 한 장의 카드를 더 받으실 수 있습니다.");
-
-                    Card selectedCardForDealer = cardDeck.draw();
-                    dealer.receiveCard(selectedCardForDealer);
-                    isDealerTurn = true;
-                } else {
-                    System.out.println("Dealer 님, 이미 한 장의 카드를 받으셨습니다. 더이상 카드를 받을 수 없습니다.");
-                }
-
-            } else {
-                if(isDealerTurn == false) {
-                    isDealerTurn = true;
-                    System.out.println("Dealer 님, 카드의 총 합이 17 이상입니다. 더이상 카드를 받을 수 없습니다.");
-                } else {
-                    System.out.println("Dealer 님, 이미 한 장의 카드를 받으셨습니다. 더이상 카드를 받을 수 없습니다.");
-                }
-            }
-
-            if(isGamerTurn && isDealerTurn) {
+            if(isAllPlayerTurnOff(cardReceivePlayers)) {
                 break;
             }
         }
+        return cardReceivePlayers;
+    }
+
+    private List<Player> receiveCardAllPlayers(Scanner sc,
+                                               CardDeck cardDeck,
+                                               List<Player> players) {
+
+
+        for(Player player : players) {
+            if (isReceiveCard(sc)) {
+                Card card = cardDeck.draw();
+                player.receiveCard(card);
+                player.turnOn();
+            } else {
+                player.turnOff();
+            }
+        }
+
+        return players;
+    }
+
+    private boolean isAllPlayerTurnOff(List<Player> players) {
+        for(Player player : players) {
+            if(player.isTurn()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isReceiveCard(Scanner sc) {
+        System.out.println("카드를 뽑겠습니까? 종료를 원하시면 0을 입력하세요.");
+        return sc.nextInt() != STOP_RECEIVE_CARD; // 0 과 같지 않으면 true 리턴 함
     }
 }
+
+
