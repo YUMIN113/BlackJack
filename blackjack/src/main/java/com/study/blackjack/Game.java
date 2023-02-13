@@ -11,6 +11,8 @@ public class Game {
 
     private static final int INIT_RECEIVE_CARD_COUNT = 2;
 
+    private static final int CAN_RECEIVE_POINT = 16;
+
     public void play() throws IOException {
 
         System.out.println("========== BlackJack ==========");
@@ -58,6 +60,8 @@ public class Game {
                 isDealerTurn = false;
 
         while (true) {
+
+            // Gamer 카드 뽑기
             System.out.println("Gamer 님, 카드를 뽑겠습니까? 종료를 원하시면 0을 입력하세요.");
             gamerInput = br.readLine();
 
@@ -68,25 +72,28 @@ public class Game {
                 gamer.receiveCard(selectedCardForGamer);
             }
 
-            if(dealer.getPointSum() >= 17) {
 
-                if(isDealerTurn == true) {
-                    System.out.println("Dealer 님, 이미 한 장의 카드를 받으셨습니다. 더이상 카드를 받을 수 없습니다.");
-                } else {
-
-                    isDealerTurn = true;
-                    System.out.println("Dealer 님, 카드의 총 합이 17 이상입니다. 더이상 카드를 받을 수 없습니다.");
-                }
-            }
+            // Dealer 카드 뽑기
+            if(dealer.getPointSum() <= CAN_RECEIVE_POINT) {
                 if(isDealerTurn == false) {
                     System.out.println("Dealer 님, 한 장의 카드를 더 받으실 수 있습니다.");
 
                     Card selectedCardForDealer = cardDeck.draw();
                     dealer.receiveCard(selectedCardForDealer);
                     isDealerTurn = true;
-
+                } else {
+                    System.out.println("Dealer 님, 이미 한 장의 카드를 받으셨습니다. 더이상 카드를 받을 수 없습니다.");
                 }
-                
+
+            } else {
+                if(isDealerTurn == false) {
+                    isDealerTurn = true;
+                    System.out.println("Dealer 님, 카드의 총 합이 17 이상입니다. 더이상 카드를 받을 수 없습니다.");
+                } else {
+                    System.out.println("Dealer 님, 이미 한 장의 카드를 받으셨습니다. 더이상 카드를 받을 수 없습니다.");
+                }
+            }
+
             if(isGamerTurn && isDealerTurn) {
                 break;
             }
