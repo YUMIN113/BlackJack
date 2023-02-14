@@ -10,13 +10,12 @@ public class Rule {
 
     private String winner;
 
-    public int getScore(List<Card> cards) {
+    private int getScore(List<Card> cards) {
 
-        int totalScore = 0;
-
-        for(Card card : cards) {
-            totalScore += card.getPoint();
-        }
+        int totalScore = cards.stream()
+                .map(it -> it.getPoint())
+                .reduce((x, y) -> x + y)
+                .orElse(0);
 
         return totalScore;
     }
