@@ -1,12 +1,68 @@
 package com.study.blackjack.domain;
 
+import com.study.blackjack.PlayerType;
+
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Rule {
 
+    private String winner;
+
     public int getScore(List<Card> cards) {
-        return 0;
+
+        int totalScore = 0;
+
+        for(Card card : cards) {
+            totalScore += card.getPoint();
+        }
+
+        return totalScore;
     }
 
-    public void getWinner(Dealer dealer, Gamer gamer) {}
+    public String getWinner(List<Player> players) {
+
+        List<Card> cardsOfDealer = getCardsOfDealer(players);
+        int totalScoreOfDealer = getScore(cardsOfDealer);
+
+        List<Card> cardsOfGamer = getCardsOfGamer(players);
+        int totalScoreOfGamer = getScore(cardsOfGamer);
+
+        if(totalScoreOfDealer <= 21 && totalScoreOfGamer <= 21) {
+
+            winner = (totalScoreOfGamer > totalScoreOfDealer) ? "Gamer" : "Dealer";
+
+        }
+
+        if (totalScoreOfDealer > 21) {
+
+            winner = "Gamer";
+
+        }
+
+        if (totalScoreOfGamer > 21) {
+
+            winner = "Dealer";
+
+        }
+
+        return winner;
+    }
+
+    private static List<Card> getCardsOfDealer(List<Player> players) {
+        return players.stream()
+                .filter(it -> PlayerType.Dealer.equals(it.getPlayerType()))
+                .map(Player::openCards)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
+
+    private static List<Card> getCardsOfGamer(List<Player> players) {
+        return players.stream()
+                .filter(it -> PlayerType.Gamer.equals(it.getPlayerType()))
+                .map(Player::openCards)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
 }

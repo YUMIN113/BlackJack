@@ -12,7 +12,7 @@ public class Game {
 
     private static final int INIT_RECEIVE_CARD_COUNT = 2;
 
-    private static final int STOP_RECEIVE_CARD = 0;
+    private static final String STOP_RECEIVE_CARD = "0";
 
     public void play() {
 
@@ -20,13 +20,20 @@ public class Game {
 
         Scanner sc = new Scanner(System.in);
 
-        Rule rule = new Rule();
         List<Player> players = Arrays.asList(new Gamer("사용자1"), new Dealer());
+
         CardDeck cardDeck = new CardDeck();
 
         initPhase(cardDeck, players);
-        playingPhase(sc, cardDeck, players);
+        List<Player> cardReceivePlayers = playingPhase(sc, cardDeck, players);
 
+
+        Rule rule = new Rule();
+        String winner = rule.getWinner(players);
+
+        System.out.println("========== winner ==========");
+        System.out.println("winner = " + winner + "입니다." );
+        System.out.println("========== winner ==========");
     }
 
     private List<Player> initPhase(CardDeck cardDeck,
@@ -90,7 +97,7 @@ public class Game {
 
     private boolean isReceiveCard(Scanner sc) {
         System.out.println("카드를 뽑겠습니까? 종료를 원하시면 0을 입력하세요.");
-        return sc.nextInt() != STOP_RECEIVE_CARD; // 0 과 같지 않으면 true 리턴 함
+        return !sc.nextLine().equals(STOP_RECEIVE_CARD); // 0 과 같지 않으면 true 리턴 함
     }
 }
 

@@ -1,5 +1,7 @@
 package com.study.blackjack.domain;
 
+import com.study.blackjack.PlayerType;
+
 import java.util.List;
 
 public interface Player {
@@ -15,4 +17,6 @@ public interface Player {
     void turnOff();
 
     boolean isTurn();
+
+    PlayerType getPlayerType();
 }

@@ -1,5 +1,7 @@
 package com.study.blackjack.domain;
 
+import com.study.blackjack.PlayerType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,5 +84,10 @@ public class Dealer implements Player {
     @Override
     public List<Card> openCards() {
         return this.cards;
+    }
+
+    @Override
+    public PlayerType getPlayerType() {
+        return PlayerType.Dealer;
     }
 }
