@@ -14,8 +14,7 @@ public class Rule {
 
         int totalScore = cards.stream()
                 .map(it -> it.getPoint())
-                .reduce((x, y) -> x + y)
-                .orElse(0);
+                .reduce(0,(x, y) -> x + y);
 
         return totalScore;
     }
