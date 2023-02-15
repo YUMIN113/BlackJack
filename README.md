@@ -1,6 +1,6 @@
 # BlackJack
 
-## Rule
+## 규칙
 - Dealer 와 Gamer 단 2명만 존재한다.
 - 카드는 Joker 를 제외한 52장이다.
 - 2 ~ 10 은 denomination 그대로의 점수이고, K/Q/J 는 10점, A는 1점으로 계산한다.
