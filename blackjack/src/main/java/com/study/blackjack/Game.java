@@ -32,7 +32,7 @@ public class Game {
         String winner = rule.getWinner(players);
 
         System.out.println("========== winner ==========");
-        System.out.println("winner = " + winner + "입니다." );
+        System.out.println("winner = " + winner + " 입니다." );
         System.out.println("========== winner ==========");
     }
 
@@ -44,6 +44,7 @@ public class Game {
         for(int i = 0; i < INIT_RECEIVE_CARD_COUNT; i++) {
 
             for(Player player : players) {
+                System.out.println(player.getName() + " 님의 차례입니다." + "\n");
                 Card card = cardDeck.draw();
                 player.receiveCard(card);
             }
@@ -74,6 +75,7 @@ public class Game {
 
 
         for(Player player : players) {
+            System.out.println(player.getName() + " 님의 차례입니다.");
             if (isReceiveCard(sc)) {
                 Card card = cardDeck.draw();
                 player.receiveCard(card);

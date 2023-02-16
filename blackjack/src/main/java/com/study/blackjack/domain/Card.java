@@ -46,9 +46,7 @@ public class Card {
     // 전체 카드 출력하기
     @Override
     public String toString() {
-        return "Card : " +
-                "pattern = " + pattern +
-                ", denomination = " + denomination +
-                ", point = " + point;
+        return  "pattern = " + pattern +
+                ", denomination = " + denomination;
     }
 }

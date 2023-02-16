@@ -7,12 +7,22 @@ import java.util.List;
 
 public class Gamer implements Player {
 
+    private String name;
+
     private List<Card> cards;
 
     private boolean turn;
 
-    public Gamer(String user) {
+
+    public Gamer(String name) {
+
         this.cards = new ArrayList<>();
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
     }
 
     @Override
@@ -27,7 +37,7 @@ public class Gamer implements Player {
     public void showCards() {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Gamer 님의 현재 보유 카드 목록" + "\n");
+        sb.append(this.getName() + " 님의 현재 보유 카드 목록" + "\n");
 
         for(Card card : cards) {
             sb.append(card.toString());

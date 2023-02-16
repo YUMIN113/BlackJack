@@ -10,6 +10,8 @@ public class Rule {
 
     private String winner;
 
+    private final int CRITERION_SCORE = 21;
+
     private int getScore(List<Card> cards) {
 
         int totalScore = cards.stream()
@@ -21,25 +23,32 @@ public class Rule {
 
     public String getWinner(List<Player> players) {
 
+
         List<Card> cardsOfDealer = getCardsOfDealer(players);
         int totalScoreOfDealer = getScore(cardsOfDealer);
 
         List<Card> cardsOfGamer = getCardsOfGamer(players);
         int totalScoreOfGamer = getScore(cardsOfGamer);
 
-        if(totalScoreOfDealer <= 21 && totalScoreOfGamer <= 21) {
+        if(totalScoreOfDealer <= CRITERION_SCORE && totalScoreOfGamer <= CRITERION_SCORE) {
 
             winner = (totalScoreOfGamer > totalScoreOfDealer) ? "Gamer" : "Dealer";
 
         }
 
-        if (totalScoreOfDealer > 21) {
+        if(totalScoreOfDealer == CRITERION_SCORE && totalScoreOfGamer == CRITERION_SCORE) {
+
+            winner = "무승부";
+
+        }
+
+        if (totalScoreOfDealer > CRITERION_SCORE) {
 
             winner = "Gamer";
 
         }
 
-        if (totalScoreOfGamer > 21) {
+        if (totalScoreOfGamer > CRITERION_SCORE) {
 
             winner = "Dealer";
 
@@ -47,6 +56,7 @@ public class Rule {
 
         return winner;
     }
+
 
     private static List<Card> getCardsOfDealer(List<Player> players) {
         return players.stream()

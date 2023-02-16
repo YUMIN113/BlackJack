@@ -40,10 +40,6 @@ public class CardDeck {
 
         // 랜덤으로 숫자 뽑기
         Card selectedCard = getRandomCard();
-
-        System.out.println("==================Result=================");
-        System.out.println("selectedCard = " + selectedCard);
-        System.out.println("==================Result=================");
         
         // selectedCard 삭제
         cards.remove(selectedCard);
