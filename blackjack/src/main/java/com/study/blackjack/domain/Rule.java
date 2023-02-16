@@ -10,7 +10,7 @@ public class Rule {
 
     private String winner;
 
-    private final int CRITERION_SCORE = 21;
+    private static final int CRITERION_SCORE = 21;
 
     private int getScore(List<Card> cards) {
 
